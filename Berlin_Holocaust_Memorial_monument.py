@@ -116,12 +116,16 @@ for i in bottom_planes:
     
 # Create solids
 solids = []
+lines = []
 for j in range(0, len(rotated_planes)):
     line = rs.AddLine(bottom_pts[j], top_pts[j])
+    lines.append(line)
+    tilt = random.randrange(-5, 5) * max_tilt
+    rot_lines = rs.RotateObject(line, bottom_pts[j], tilt, planes.XAxis, copy=False)
     rct = rs.AddRectangle( rotated_planes[j], 
     rg.Interval(-0.5 * block_w, 0.5 * block_w), 
     rg.Interval(-0.5 * block_d, 0.5 * block_d))
-    solid = rs.ExtrudeCurve(rct, line)
+    solid = rs.ExtrudeCurve(rct, rot_lines)
     sld = rs.CapPlanarHoles(solid)
     solids.append(solid)
     
